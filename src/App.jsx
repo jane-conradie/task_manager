@@ -10,6 +10,9 @@ const App = () => {
   const [tasks, setTasks] = useState([]);
 
   const [newTaskName, setNewTaskName] = useState("");
+  const [showForm, setShowForm] = useState(false);
+
+  const [taskToEdit, setTaskToEdit] = useState();
 
   // get all tasks from the server
   // set tasks state
@@ -34,6 +37,27 @@ const App = () => {
 
       // reset value
       setNewTaskName("");
+      setShowForm(false);
+    });
+  };
+
+  const editTask = (event) => {
+    event.preventDefault();
+
+    const id = taskToEdit.id;
+
+    // get task data
+    const task = tasks.find((t) => t.id === id);
+    // replace task data
+    const newTask = { ...task, name: newTaskName };
+    // send new task to server
+    taskService.editTask(id, newTask).then((response) => {
+      // reset form values
+      setShowForm(false);
+      setTaskToEdit(null);
+      setNewTaskName("");
+
+      setTasks(tasks.map((task) => (task.id === id ? response.data : task)));
     });
   };
 
@@ -46,12 +70,29 @@ const App = () => {
 
   return (
     <>
-      <TaskList tasks={tasks} deleteTask={deleteTask} />
-      <TaskForm
-        newTaskName={newTaskName}
+      <TaskList
+        tasks={tasks}
+        deleteTask={deleteTask}
+        editTask={editTask}
+        showForm={showForm}
+        setShowForm={setShowForm}
+        taskToEdit={taskToEdit}
+        setTaskToEdit={setTaskToEdit}
         setNewTaskName={setNewTaskName}
-        addTask={addTask}
+        taskName={newTaskName}
       />
+      {showForm && !taskToEdit ? (
+        <TaskForm
+          setNewTaskName={setNewTaskName}
+          addTask={addTask}
+          taskName={newTaskName}
+          editTask={editTask}
+          submitTask={addTask}
+        />
+      ) : (
+        <div />
+      )}
+      <button onClick={() => setShowForm(!showForm)}>add task</button>
     </>
   );
 };

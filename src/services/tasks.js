@@ -7,7 +7,9 @@ const getAll = () => {
   return axios.get(baseUrl);
 };
 
-const editTask = ({ id }) => {};
+const editTask = (id, newTask) => {
+  return axios.put(`${baseUrl}/${id}`, newTask);
+};
 
 const deleteTask = (id) => {
   return axios.delete(`${baseUrl}/${id}`);
