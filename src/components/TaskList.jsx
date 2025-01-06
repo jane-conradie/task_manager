@@ -10,10 +10,17 @@ const TaskList = ({
   setTaskToEdit,
   setNewTaskName,
   taskName,
+  markTaskAsDone,
+  searchString,
 }) => {
+  const filteredTasks =
+    searchString != ""
+      ? tasks.filter((task) => task.name.includes(searchString))
+      : tasks;
+
   return (
     <ol>
-      {tasks.map((task) => (
+      {filteredTasks.map((task) => (
         <TaskItem
           key={task.id}
           task={task}
@@ -25,6 +32,7 @@ const TaskList = ({
           setTaskToEdit={setTaskToEdit}
           setNewTaskName={setNewTaskName}
           taskName={taskName}
+          markTaskAsDone={markTaskAsDone}
         />
       ))}
     </ol>

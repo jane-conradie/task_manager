@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import "./App.css";
 
-import { TaskList, TaskForm } from "./components";
+import { TaskList, TaskForm, Search } from "./components";
 
 import taskService from "./services/tasks";
 
@@ -13,6 +13,8 @@ const App = () => {
   const [showForm, setShowForm] = useState(false);
 
   const [taskToEdit, setTaskToEdit] = useState();
+
+  const [searchString, setSearchString] = useState("");
 
   // get all tasks from the server
   // set tasks state
@@ -28,7 +30,7 @@ const App = () => {
     const taskObject = {
       id: String(tasks.length + 1),
       name: newTaskName,
-      status: String(0),
+      isComplete: false,
     };
 
     taskService.addTask(taskObject).then((response) => {
@@ -49,7 +51,11 @@ const App = () => {
     // get task data
     const task = tasks.find((t) => t.id === id);
     // replace task data
-    const newTask = { ...task, name: newTaskName };
+    const newTask = {
+      ...task,
+      name: newTaskName,
+    };
+
     // send new task to server
     taskService.editTask(id, newTask).then((response) => {
       // reset form values
@@ -58,6 +64,21 @@ const App = () => {
       setNewTaskName("");
 
       setTasks(tasks.map((task) => (task.id === id ? response.data : task)));
+    });
+  };
+
+  const markTaskAsDone = (task) => {
+    // replace task data
+    const newTask = {
+      ...task,
+      isComplete: !task.isComplete,
+    };
+
+    // send new task to server
+    taskService.editTask(newTask.id, newTask).then((response) => {
+      setTasks(
+        tasks.map((task) => (task.id === newTask.id ? response.data : task))
+      );
     });
   };
 
@@ -70,6 +91,7 @@ const App = () => {
 
   return (
     <>
+      <Search setSearchString={setSearchString} />
       <TaskList
         tasks={tasks}
         deleteTask={deleteTask}
@@ -80,6 +102,8 @@ const App = () => {
         setTaskToEdit={setTaskToEdit}
         setNewTaskName={setNewTaskName}
         taskName={newTaskName}
+        markTaskAsDone={markTaskAsDone}
+        searchString={searchString}
       />
       {showForm && !taskToEdit ? (
         <TaskForm

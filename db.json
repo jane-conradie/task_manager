@@ -3,32 +3,32 @@
     {
       "id": "1",
       "name": "Take dog for a wash",
-      "status": 0
+      "isComplete": false
     },
     {
       "id": "3",
       "name": "Water garden tomorrow",
-      "status": "0"
+      "isComplete": true
     },
     {
       "id": "4",
       "name": "Take out trash",
-      "status": "0"
-    },
-    {
-      "id": "5",
-      "name": "dsfsdfdsfs",
-      "status": "0"
+      "isComplete": false
     },
     {
       "id": "8",
-      "name": "dfgdfg",
-      "status": "0"
+      "name": "do something",
+      "isComplete": false
     },
     {
-      "id": "9",
-      "name": "ffdgdfg",
-      "status": "0"
+      "id": "5",
+      "name": "yes",
+      "isComplete": true
+    },
+    {
+      "id": "6",
+      "name": "gfdgdfgd",
+      "isComplete": false
     }
   ]
 }

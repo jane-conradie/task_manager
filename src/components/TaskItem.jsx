@@ -1,5 +1,7 @@
 import TaskForm from "./TaskForm";
 
+import isComplete from "../images/isComplete.png";
+
 const TaskItem = ({
   task,
   deleteTask,
@@ -10,11 +12,8 @@ const TaskItem = ({
   setNewTaskName,
   taskName,
   editTask,
+  markTaskAsDone,
 }) => {
-  // mark as complete should just immediately change data
-
-  // edit should actually show edit field
-
   const toggleForm = () => {
     // set values
     setTaskToEdit(task);
@@ -33,6 +32,14 @@ const TaskItem = ({
       ) : (
         <div>
           {task.name}
+          {task.isComplete ? <p>i done</p> : <p></p>}
+          <button
+            onClick={() => {
+              markTaskAsDone(task);
+            }}
+          >
+            mark as done
+          </button>
           <button onClick={() => toggleForm()}>edit</button>
           <button onClick={() => deleteTask(task.id)}>delete</button>
         </div>

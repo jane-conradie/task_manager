@@ -7,7 +7,12 @@ const TaskForm = ({ taskName, setNewTaskName, submitTask }) => {
 
   return (
     <form onSubmit={submitTask}>
-      <input type="text" value={taskName} onChange={handleInputFieldChange} />
+      <input
+        type="text"
+        value={taskName}
+        onChange={handleInputFieldChange}
+        required
+      />
       <input type="submit" value="save" />
     </form>
   );
